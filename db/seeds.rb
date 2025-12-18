@@ -89,7 +89,9 @@ newsletters_data = [
       <p>We encourage you to reply to our emails with your prayer requests. We have a team of dedicated prayer warriors who lift up every request.</p>
       <p><strong>May God bless you abundantly!</strong></p>
     HTML
-    status: :sent
+    status: :sent,
+    sent_at: 2.weeks.ago,
+    tag_names: [] # Sent to all subscribers
   },
   {
     title: "Weekly Devotional: Walking in Faith",
@@ -106,7 +108,9 @@ newsletters_data = [
       </ol>
       <p>This week, choose one area of your life where you've been relying on sight instead of faith. Surrender it to God and watch Him work.</p>
     HTML
-    status: :sent
+    status: :sent,
+    sent_at: 1.week.ago,
+    tag_names: [] # Sent to all subscribers
   },
   {
     title: "Community Update: Summer Events",
@@ -123,7 +127,9 @@ newsletters_data = [
       </ul>
       <p>Volunteers are needed for all events! Reply to this email if you'd like to serve.</p>
     HTML
-    status: :sent
+    status: :sent,
+    sent_at: 3.days.ago,
+    tag_names: ["Volunteer"] # Sent only to volunteers
   },
   {
     title: "Prayer Request Update",
@@ -144,7 +150,9 @@ newsletters_data = [
         <li>Revival in our community.</li>
       </ul>
     HTML
-    status: :draft
+    status: :scheduled,
+    scheduled_at: 2.days.from_now.beginning_of_hour,
+    tag_names: ["Prayer Warrior"] # Targeted to prayer warriors
   },
   {
     title: "Monthly Donor Appreciation",
@@ -160,7 +168,45 @@ newsletters_data = [
       </ul>
       <p>You are storing up treasures in heaven. God sees your faithfulness.</p>
     HTML
-    status: :draft
+    status: :draft,
+    tag_names: ["Monthly Donor", "VIP"] # Targeted to donors and VIPs
+  },
+  {
+    title: "Pastor's Corner: Leadership Insights",
+    subject: "Monthly Leadership Message",
+    content: <<~HTML,
+      <h2>Dear Fellow Shepherds,</h2>
+      <p>As pastors and ministry leaders, we carry a unique responsibility. This month, I want to share some thoughts on servant leadership.</p>
+      <h3>Key Principles</h3>
+      <ol>
+        <li><strong>Lead by Example</strong> — Our actions speak louder than our sermons.</li>
+        <li><strong>Invest in Others</strong> — The measure of our leadership is the leaders we develop.</li>
+        <li><strong>Stay Humble</strong> — We are under-shepherds serving the Chief Shepherd.</li>
+      </ol>
+      <p>Let's continue to support and pray for one another in this sacred calling.</p>
+      <p>Grace and peace,<br>Pastor Demo</p>
+    HTML
+    status: :draft,
+    tag_names: ["Pastor"] # Targeted only to pastors
+  },
+  {
+    title: "New Member Welcome Series",
+    subject: "Getting Started with Our Community",
+    content: <<~HTML,
+      <h2>Welcome to the Family!</h2>
+      <p>We're so glad you've joined us. Here's everything you need to know to get connected:</p>
+      <h3>Next Steps</h3>
+      <ul>
+        <li><strong>Connect Card</strong> — Fill out your profile so we can get to know you better.</li>
+        <li><strong>Join a Group</strong> — Small groups meet weekly for fellowship and Bible study.</li>
+        <li><strong>Serve</strong> — Discover your gifts and find a place to serve.</li>
+        <li><strong>Give</strong> — Partner with us in advancing God's kingdom.</li>
+      </ul>
+      <p>Have questions? Simply reply to this email—we'd love to hear from you!</p>
+    HTML
+    status: :scheduled,
+    scheduled_at: 1.week.from_now.beginning_of_hour,
+    tag_names: ["New Subscriber"] # Targeted to new subscribers
   }
 ]
 
@@ -168,15 +214,35 @@ newsletters_data.each do |data|
   newsletter = Newsletter.find_or_initialize_by(user: user, title: data[:title])
   newsletter.assign_attributes(
     subject: data[:subject],
-    status: data[:status]
+    status: data[:status],
+    scheduled_at: data[:scheduled_at],
+    sent_at: data[:sent_at]
   )
   newsletter.content = data[:content]
   newsletter.save!
+
+  # Assign tags to newsletter for targeted sending
+  if data[:tag_names].present?
+    newsletter_tags = tags.select { |t| data[:tag_names].include?(t.name) }
+    newsletter.tags = newsletter_tags
+  else
+    newsletter.tags = []
+  end
 end
 puts "Created #{newsletters_data.count} newsletters"
 
+# Summary
+puts ""
 puts "Seeding complete!"
 puts ""
 puts "Demo credentials:"
 puts "  Email: demo@righteousdispatch.com"
 puts "  Password: password123"
+puts ""
+puts "Data summary:"
+puts "  - #{user.newsletters.sent.count} sent newsletters"
+puts "  - #{user.newsletters.scheduled.count} scheduled newsletters"
+puts "  - #{user.newsletters.drafts.count} draft newsletters"
+puts "  - #{user.subscribers.confirmed.count} confirmed subscribers"
+puts "  - #{user.tags.count} tags"
+puts "  - #{NewsletterTag.count} newsletter-tag assignments"

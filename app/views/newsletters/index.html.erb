@@ -47,6 +47,8 @@
               <div class="col-span-3 text-[10px] text-base-content/60">
                 <% if newsletter.sent? && newsletter.sent_at %>
                   Sent <%= newsletter.sent_at.strftime("%b %d, %Y") %>
+                <% elsif newsletter.scheduled? && newsletter.scheduled_at %>
+                  <span class="text-warning">Scheduled <%= newsletter.scheduled_at.strftime("%b %d, %Y %I:%M %p") %></span>
                 <% else %>
                   <%= newsletter.updated_at.strftime("%b %d, %Y %H:%M") %>
                 <% end %>

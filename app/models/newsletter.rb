@@ -1,6 +1,8 @@
 class Newsletter < ApplicationRecord
   belongs_to :user
   has_rich_text :content
+  has_many :newsletter_tags, dependent: :destroy
+  has_many :tags, through: :newsletter_tags
 
   # Status enum
   enum :status, {
@@ -16,6 +18,7 @@ class Newsletter < ApplicationRecord
   scope :scheduled, -> { where(status: :scheduled) }
   scope :sent, -> { where(status: :sent) }
   scope :recent, -> { order(updated_at: :desc) }
+  scope :ready_to_send, -> { scheduled.where("scheduled_at <= ?", Time.current) }
 
   # Validations
   validates :title, presence: true
@@ -35,5 +38,19 @@ class Newsletter < ApplicationRecord
   # Mark as sent
   def mark_sent!
     update!(status: :sent, sent_at: Time.current)
+  end
+
+  # Check if newsletter has tag filters
+  def has_tag_filters?
+    tags.any?
+  end
+
+  # Get recipients based on tag filters
+  def recipients
+    if has_tag_filters?
+      user.subscribers.confirmed.joins(:tags).where(tags: { id: tag_ids }).distinct
+    else
+      user.subscribers.confirmed
+    end
   end
 end

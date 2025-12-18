@@ -37,7 +37,14 @@
           <div class="text-[10px] sm:text-xs font-bold">ACTIONS</div>
         </div>
         <div class="p-4 space-y-3">
-          <% if @newsletter.draft? || @newsletter.scheduled? %>
+          <% if @newsletter.scheduled? %>
+            <div class="w-full bg-warning/20 text-warning text-center px-4 py-2 text-[10px] font-bold mb-2">
+              SCHEDULED FOR <%= @newsletter.scheduled_at&.strftime("%b %d, %Y %I:%M %p") %>
+            </div>
+            <%= button_to "CANCEL SCHEDULE", newsletter_path(@newsletter, newsletter: { status: "draft", scheduled_at: nil }),
+                method: :patch,
+                class: "w-full bg-base-content/10 hover:bg-base-content/20 border border-base-content/20 px-4 py-2 text-[10px] font-bold transition-colors cursor-pointer" %>
+          <% elsif @newsletter.draft? %>
             <%= link_to confirm_send_newsletter_path(@newsletter), class: "block w-full text-center bg-success text-success-content hover:bg-success/80 px-4 py-2 text-[10px] font-bold transition-colors" do %>
               SEND NEWSLETTER
             <% end %>
@@ -74,6 +81,18 @@
             <div class="text-[10px] text-base-content/60">LAST UPDATED</div>
             <div class="text-xs font-bold"><%= @newsletter.updated_at.strftime("%b %d, %Y %H:%M") %></div>
           </div>
+          <% if @newsletter.scheduled_at.present? %>
+            <div>
+              <div class="text-[10px] text-base-content/60">SCHEDULED FOR</div>
+              <div class="text-xs font-bold text-warning"><%= @newsletter.scheduled_at.strftime("%b %d, %Y %I:%M %p") %></div>
+            </div>
+          <% end %>
+          <% if @newsletter.sent_at.present? %>
+            <div>
+              <div class="text-[10px] text-base-content/60">SENT ON</div>
+              <div class="text-xs font-bold text-success"><%= @newsletter.sent_at.strftime("%b %d, %Y %I:%M %p") %></div>
+            </div>
+          <% end %>
         </div>
       </div>
     </div>

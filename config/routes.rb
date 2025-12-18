@@ -9,12 +9,20 @@ Rails.application.routes.draw do
   # Dashboard (authenticated users)
   get "dashboard", to: "dashboard#show", as: :dashboard
 
+  # Settings
+  get "settings", to: "settings#show"
+  patch "settings", to: "settings#update"
+  delete "settings", to: "settings#destroy"
+  patch "settings/password", to: "settings#update_password", as: :settings_password
+
   # Newsletters
   resources :newsletters do
     member do
       get :preview
       get :confirm_send
       post :send_newsletter
+      post :schedule
+      patch :update_tags
     end
   end
 

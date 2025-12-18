@@ -6,10 +6,8 @@ class SendNewsletterJob < ApplicationJob
     return unless newsletter
     return unless newsletter.status == "sending"
 
-    user = newsletter.user
-    subscribers = user.subscribers.confirmed
-
-    subscribers.find_each do |subscriber|
+    # Use newsletter.recipients which respects tag filters
+    newsletter.recipients.find_each do |subscriber|
       SendNewsletterEmailJob.perform_later(newsletter_id, subscriber.id)
     end
 
