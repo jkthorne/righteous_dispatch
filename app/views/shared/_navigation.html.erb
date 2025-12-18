@@ -25,6 +25,14 @@
               class: "text-[10px] sm:text-xs text-base-content/60 hover:text-primary hidden sm:inline" do %>
             <%= current_user.email %>
           <% end %>
+          <button type="button" onclick="toggleTheme()"
+              class="p-1.5 text-base-content/60 hover:text-primary transition-colors cursor-pointer"
+              title="Toggle dark mode"
+              id="theme-toggle-auth">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+            </svg>
+          </button>
           <%= button_to "SIGN OUT", session_path, method: :delete,
               class: "bg-base-content/10 hover:bg-base-content/20 border border-base-content/20 px-3 py-1.5 text-[10px] sm:text-xs font-bold transition-colors cursor-pointer" %>
         <% else %>
@@ -32,6 +40,14 @@
               class: "text-[10px] sm:text-xs font-bold text-primary hover:underline" %>
           <%= link_to "REGISTER", new_registration_path,
               class: "bg-primary text-primary-content hover:bg-primary/80 px-3 py-1.5 text-[10px] font-bold transition-colors" %>
+          <button type="button" onclick="toggleTheme()"
+              class="p-1.5 text-base-content/60 hover:text-primary transition-colors cursor-pointer"
+              title="Toggle dark mode"
+              id="theme-toggle-unauth">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+            </svg>
+          </button>
         <% end %>
       </div>
     </div>
