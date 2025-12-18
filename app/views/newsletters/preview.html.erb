@@ -17,7 +17,7 @@
         <%= link_to edit_newsletter_path(@newsletter), class: "text-[10px] text-base-content/60 hover:underline font-bold" do %>
           EDIT
         <% end %>
-        <%= link_to confirm_send_newsletter_path(@newsletter), class: "bg-primary text-primary-content hover:bg-primary/80 px-3 py-1.5 text-[10px] font-bold transition-colors" do %>
+        <%= link_to confirm_send_newsletter_path(@newsletter), class: "bg-primary text-primary-content hover:bg-primary/80 px-3 py-1.5 text-[10px] sm:text-xs font-bold transition-colors" do %>
           SEND NEWSLETTER ->
         <% end %>
       </div>
@@ -61,7 +61,7 @@
     <%= link_to edit_newsletter_path(@newsletter), class: "text-[10px] text-base-content/60 hover:underline font-bold" do %>
       <- BACK TO EDITOR
     <% end %>
-    <%= link_to confirm_send_newsletter_path(@newsletter), class: "bg-primary text-primary-content hover:bg-primary/80 px-4 py-2 text-[10px] font-bold transition-colors" do %>
+    <%= link_to confirm_send_newsletter_path(@newsletter), class: "bg-primary text-primary-content hover:bg-primary/80 px-4 py-2 text-[10px] sm:text-xs font-bold transition-colors" do %>
       CONTINUE TO SEND ->
     <% end %>
   </div>

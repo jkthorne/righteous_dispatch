@@ -24,7 +24,7 @@
             <%= current_user.email %>
           <% end %>
           <%= button_to "SIGN OUT", session_path, method: :delete,
-              class: "bg-base-content/10 hover:bg-base-content/20 border border-base-content/20 px-3 py-1.5 text-[10px] font-bold transition-colors cursor-pointer" %>
+              class: "bg-base-content/10 hover:bg-base-content/20 border border-base-content/20 px-3 py-1.5 text-[10px] sm:text-xs font-bold transition-colors cursor-pointer" %>
         <% else %>
           <%= link_to "SIGN IN", new_session_path,
               class: "text-[10px] sm:text-xs font-bold text-primary hover:underline" %>

@@ -43,9 +43,9 @@
             </div>
             <%= button_to "CANCEL SCHEDULE", newsletter_path(@newsletter, newsletter: { status: "draft", scheduled_at: nil }),
                 method: :patch,
-                class: "w-full bg-base-content/10 hover:bg-base-content/20 border border-base-content/20 px-4 py-2 text-[10px] font-bold transition-colors cursor-pointer" %>
+                class: "w-full bg-base-content/10 hover:bg-base-content/20 border border-base-content/20 px-4 py-2 text-[10px] sm:text-xs font-bold transition-colors cursor-pointer" %>
           <% elsif @newsletter.draft? %>
-            <%= link_to confirm_send_newsletter_path(@newsletter), class: "block w-full text-center bg-success text-success-content hover:bg-success/80 px-4 py-2 text-[10px] font-bold transition-colors" do %>
+            <%= link_to confirm_send_newsletter_path(@newsletter), class: "block w-full text-center bg-success text-success-content hover:bg-success/80 px-4 py-2 text-[10px] sm:text-xs font-bold transition-colors" do %>
               SEND NEWSLETTER
             <% end %>
           <% elsif @newsletter.sending? %>
@@ -57,13 +57,13 @@
               SENT <%= @newsletter.sent_at&.strftime("%b %d, %Y") %>
             </div>
           <% end %>
-          <%= link_to preview_newsletter_path(@newsletter), class: "block w-full text-center bg-base-content/10 hover:bg-base-content/20 border border-base-content/20 px-4 py-2 text-[10px] font-bold transition-colors" do %>
+          <%= link_to preview_newsletter_path(@newsletter), class: "block w-full text-center bg-base-content/10 hover:bg-base-content/20 border border-base-content/20 px-4 py-2 text-[10px] sm:text-xs font-bold transition-colors" do %>
             PREVIEW EMAIL
           <% end %>
           <% unless @newsletter.sent? || @newsletter.sending? %>
             <%= button_to "DELETE NEWSLETTER", newsletter_path(@newsletter), method: :delete,
                 data: { turbo_confirm: "Are you sure you want to delete this newsletter?" },
-                class: "w-full bg-error/10 hover:bg-error/20 border border-error/30 text-error px-4 py-2 text-[10px] font-bold transition-colors cursor-pointer" %>
+                class: "w-full bg-error/10 hover:bg-error/20 border border-error/30 text-error px-4 py-2 text-[10px] sm:text-xs font-bold transition-colors cursor-pointer" %>
           <% end %>
         </div>
       </div>
