@@ -18,6 +18,8 @@
               class: "text-[10px] sm:text-xs font-bold #{request.path.start_with?('/newsletters') ? 'text-primary' : 'text-base-content/60 hover:text-primary'}" %>
           <%= link_to "SUBSCRIBERS", subscribers_path,
               class: "text-[10px] sm:text-xs font-bold #{request.path.start_with?('/subscribers') ? 'text-primary' : 'text-base-content/60 hover:text-primary'}" %>
+          <%= link_to "TAGS", tags_path,
+              class: "text-[10px] sm:text-xs font-bold #{request.path.start_with?('/tags') ? 'text-primary' : 'text-base-content/60 hover:text-primary'}" %>
           <span class="text-[10px] sm:text-xs text-base-content/40 hidden sm:inline">|</span>
           <%= link_to settings_path,
               class: "text-[10px] sm:text-xs text-base-content/60 hover:text-primary hidden sm:inline" do %>
