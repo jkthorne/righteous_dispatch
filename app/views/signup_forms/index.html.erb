@@ -1,0 +1,71 @@
+<% content_for :title, "Signup Forms - RighteousDispatch" %>
+
+<div class="max-w-4xl mx-auto">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h1 class="text-lg sm:text-xl font-bold">SIGNUP FORMS</h1>
+      <p class="text-[10px] sm:text-xs text-base-content/60 mt-1">Create embeddable forms to grow your subscriber list</p>
+    </div>
+    <%= link_to new_signup_form_path, class: "bg-primary text-primary-content hover:bg-primary/80 px-4 py-2 text-[10px] sm:text-xs font-bold transition-colors" do %>
+      NEW FORM
+    <% end %>
+  </div>
+
+  <% if @signup_forms.any? %>
+    <div class="border border-base-content/20">
+      <div class="bg-base-content/5 p-3 border-b border-base-content/20 hidden sm:block">
+        <div class="grid grid-cols-12 gap-4 text-[10px] font-bold text-base-content/60">
+          <div class="col-span-4">FORM NAME</div>
+          <div class="col-span-3">HEADLINE</div>
+          <div class="col-span-2">STATUS</div>
+          <div class="col-span-3">ACTIONS</div>
+        </div>
+      </div>
+      <div class="divide-y divide-base-content/10">
+        <% @signup_forms.each do |form| %>
+          <div class="p-3 hover:bg-base-200 transition-colors">
+            <div class="grid grid-cols-12 gap-4 items-center">
+              <div class="col-span-12 sm:col-span-4">
+                <%= link_to form.title, signup_form_path(form), class: "text-sm font-bold hover:underline" %>
+                <div class="text-[10px] text-base-content/60 mt-1 sm:hidden">
+                  <%= form.headline.truncate(40) %>
+                </div>
+              </div>
+              <div class="hidden sm:block col-span-3 text-xs text-base-content/80">
+                <%= form.headline.truncate(30) %>
+              </div>
+              <div class="col-span-6 sm:col-span-2">
+                <% if form.active? %>
+                  <span class="bg-success/20 text-success px-2 py-1 text-[10px] font-bold">ACTIVE</span>
+                <% else %>
+                  <span class="bg-base-content/20 text-base-content/60 px-2 py-1 text-[10px] font-bold">INACTIVE</span>
+                <% end %>
+              </div>
+              <div class="col-span-6 sm:col-span-3 flex items-center gap-2 justify-end sm:justify-start">
+                <%= link_to "VIEW", signup_form_path(form), class: "text-[10px] text-primary hover:underline font-bold" %>
+                <%= link_to "EDIT", edit_signup_form_path(form), class: "text-[10px] text-primary hover:underline font-bold" %>
+                <%= button_to "DELETE", signup_form_path(form), method: :delete,
+                    form: { class: "inline" },
+                    data: { turbo_confirm: "Delete this signup form?" },
+                    class: "text-[10px] text-error hover:underline font-bold cursor-pointer" %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% else %>
+    <div class="border border-base-content/20 p-8 text-center">
+      <div class="text-base-content/40 mb-4">
+        <svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+      </div>
+      <div class="text-sm font-bold mb-2">NO SIGNUP FORMS YET</div>
+      <p class="text-[10px] text-base-content/60 mb-4">Create your first signup form to start collecting subscribers.</p>
+      <%= link_to new_signup_form_path, class: "inline-block bg-primary text-primary-content hover:bg-primary/80 px-4 py-2 text-[10px] font-bold transition-colors" do %>
+        CREATE YOUR FIRST FORM
+      <% end %>
+    </div>
+  <% end %>
+</div>

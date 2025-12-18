@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_18_042914) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_18_053854) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -52,6 +52,22 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_18_042914) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "email_events", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "event_type", null: false
+    t.string "ip_address"
+    t.jsonb "metadata", default: {}
+    t.bigint "newsletter_id", null: false
+    t.bigint "subscriber_id", null: false
+    t.datetime "updated_at", null: false
+    t.string "user_agent"
+    t.index ["event_type"], name: "index_email_events_on_event_type"
+    t.index ["newsletter_id", "event_type"], name: "index_email_events_on_newsletter_id_and_event_type"
+    t.index ["newsletter_id", "subscriber_id", "event_type"], name: "idx_email_events_unique_open", unique: true, where: "((event_type)::text = 'open'::text)"
+    t.index ["newsletter_id"], name: "index_email_events_on_newsletter_id"
+    t.index ["subscriber_id"], name: "index_email_events_on_subscriber_id"
+  end
+
   create_table "newsletter_tags", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.bigint "newsletter_id", null: false
@@ -76,6 +92,31 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_18_042914) do
     t.index ["status"], name: "index_newsletters_on_status"
     t.index ["user_id", "status"], name: "index_newsletters_on_user_id_and_status"
     t.index ["user_id"], name: "index_newsletters_on_user_id"
+  end
+
+  create_table "signup_form_tags", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "signup_form_id", null: false
+    t.bigint "tag_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["signup_form_id", "tag_id"], name: "index_signup_form_tags_on_signup_form_id_and_tag_id", unique: true
+    t.index ["signup_form_id"], name: "index_signup_form_tags_on_signup_form_id"
+    t.index ["tag_id"], name: "index_signup_form_tags_on_tag_id"
+  end
+
+  create_table "signup_forms", force: :cascade do |t|
+    t.boolean "active", default: true, null: false
+    t.string "button_text", default: "Subscribe"
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.string "headline", default: "Subscribe to our newsletter"
+    t.string "public_id", null: false
+    t.text "success_message", default: "Thanks for subscribing!"
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["public_id"], name: "index_signup_forms_on_public_id", unique: true
+    t.index ["user_id"], name: "index_signup_forms_on_user_id"
   end
 
   create_table "subscriber_tags", force: :cascade do |t|
@@ -131,6 +172,9 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_18_042914) do
     t.datetime "remember_created_at"
     t.string "remember_token"
     t.datetime "updated_at", null: false
+    t.text "welcome_email_content", default: "Thank you for subscribing! We're excited to have you join our community."
+    t.boolean "welcome_email_enabled", default: false, null: false
+    t.string "welcome_email_subject", default: "Welcome to our newsletter!"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["password_reset_token"], name: "index_users_on_password_reset_token", unique: true
@@ -139,9 +183,14 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_18_042914) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "email_events", "newsletters"
+  add_foreign_key "email_events", "subscribers"
   add_foreign_key "newsletter_tags", "newsletters"
   add_foreign_key "newsletter_tags", "tags"
   add_foreign_key "newsletters", "users"
+  add_foreign_key "signup_form_tags", "signup_forms"
+  add_foreign_key "signup_form_tags", "tags"
+  add_foreign_key "signup_forms", "users"
   add_foreign_key "subscriber_tags", "subscribers"
   add_foreign_key "subscriber_tags", "tags"
   add_foreign_key "subscribers", "users"

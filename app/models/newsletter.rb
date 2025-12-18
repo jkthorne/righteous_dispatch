@@ -3,6 +3,7 @@ class Newsletter < ApplicationRecord
   has_rich_text :content
   has_many :newsletter_tags, dependent: :destroy
   has_many :tags, through: :newsletter_tags
+  has_many :email_events, dependent: :destroy
 
   # Status enum
   enum :status, {
@@ -52,5 +53,33 @@ class Newsletter < ApplicationRecord
     else
       user.subscribers.confirmed
     end
+  end
+
+  # Analytics
+  def total_sent
+    # Count based on recipients at send time (stored or calculated)
+    recipients.count
+  end
+
+  def total_opens
+    email_events.opens.count
+  end
+
+  def total_clicks
+    email_events.clicks.count
+  end
+
+  def unique_clicks
+    email_events.clicks.select(:subscriber_id).distinct.count
+  end
+
+  def open_rate
+    return 0 if total_sent.zero?
+    (total_opens.to_f / total_sent * 100).round(1)
+  end
+
+  def click_rate
+    return 0 if total_opens.zero?
+    (unique_clicks.to_f / total_opens * 100).round(1)
   end
 end

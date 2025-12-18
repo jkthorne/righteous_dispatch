@@ -41,7 +41,7 @@ class SettingsController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:name, :email)
+    params.require(:user).permit(:name, :email, :welcome_email_enabled, :welcome_email_subject, :welcome_email_content)
   end
 
   def password_params

@@ -88,6 +88,46 @@
     </div>
   </div>
 
+  <!-- Welcome Email Section -->
+  <div class="border border-base-content/20 mb-4">
+    <div class="bg-base-content/5 p-3 border-b border-base-content/20">
+      <div class="text-[10px] sm:text-xs font-bold">WELCOME EMAIL</div>
+    </div>
+    <div class="p-4 sm:p-6">
+      <p class="text-[10px] text-base-content/60 mb-4">
+        Automatically send a welcome email to new subscribers when they sign up through your forms.
+      </p>
+      <%= form_with model: current_user, url: settings_path, method: :patch, class: "space-y-4" do |f| %>
+        <div>
+          <label class="inline-flex items-center gap-2 cursor-pointer">
+            <%= f.check_box :welcome_email_enabled, class: "w-4 h-4" %>
+            <span class="text-xs font-bold">ENABLE WELCOME EMAIL</span>
+          </label>
+        </div>
+
+        <div>
+          <label class="text-[10px] text-base-content/60 mb-1 block font-bold">SUBJECT LINE</label>
+          <%= f.text_field :welcome_email_subject,
+              class: "w-full border border-base-content/20 bg-base-100 px-3 py-2 text-xs focus:border-primary focus:outline-none",
+              placeholder: "Welcome to our newsletter!" %>
+        </div>
+
+        <div>
+          <label class="text-[10px] text-base-content/60 mb-1 block font-bold">MESSAGE CONTENT</label>
+          <%= f.text_area :welcome_email_content, rows: 5,
+              class: "w-full border border-base-content/20 bg-base-100 px-3 py-2 text-xs focus:border-primary focus:outline-none",
+              placeholder: "Thank you for subscribing! We're excited to have you join our community." %>
+          <p class="text-[10px] text-base-content/40 mt-1">This message will be sent to new subscribers.</p>
+        </div>
+
+        <div class="pt-2">
+          <%= f.submit "SAVE WELCOME EMAIL SETTINGS",
+              class: "bg-primary text-primary-content hover:bg-primary/80 px-4 py-2 text-[10px] sm:text-xs font-bold transition-colors cursor-pointer" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
   <!-- Account Info -->
   <div class="border border-base-content/20 mb-4">
     <div class="bg-base-content/5 p-3 border-b border-base-content/20">

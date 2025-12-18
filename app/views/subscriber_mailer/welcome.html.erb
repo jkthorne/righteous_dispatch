@@ -34,25 +34,13 @@
       padding: 30px;
       border: 1px solid #e5e7eb;
     }
-    .content h1, .content h2, .content h3 {
+    .content h2 {
       color: #1f2937;
       margin-top: 0;
+      font-size: 20px;
     }
-    .content a {
-      color: #3b82f6;
-    }
-    .content blockquote {
-      border-left: 3px solid #3b82f6;
-      margin: 20px 0;
-      padding-left: 20px;
-      color: #4b5563;
-      font-style: italic;
-    }
-    .content ul, .content ol {
-      padding-left: 20px;
-    }
-    .content li {
-      margin-bottom: 8px;
+    .content p {
+      margin: 0 0 16px 0;
     }
     .footer {
       padding: 20px;
@@ -64,33 +52,26 @@
       color: #6b7280;
       text-decoration: underline;
     }
-    .view-browser {
-      text-align: center;
-      padding: 10px;
-      font-size: 11px;
-      color: #9ca3af;
-    }
-    .view-browser a {
-      color: #9ca3af;
-    }
   </style>
 </head>
 <body>
   <div class="wrapper">
-    <div class="view-browser">
-      <a href="<%= @view_in_browser_url %>">View this email in your browser</a>
-    </div>
-
     <div class="header">
       <h1>RIGHTEOUSDISPATCH</h1>
     </div>
 
     <div class="content">
-      <% if @newsletter.preview_text.present? %>
-        <p style="color: #6b7280; font-size: 14px; margin-bottom: 20px;"><%= @newsletter.preview_text %></p>
+      <h2><%= @user.welcome_email_subject %></h2>
+
+      <% if @subscriber.name.present? %>
+        <p>Hi <%= @subscriber.name %>,</p>
       <% end %>
 
-      <%= @newsletter.content %>
+      <p><%= simple_format(@user.welcome_email_content) %></p>
+
+      <p>
+        <em>— <%= @user.name %></em>
+      </p>
     </div>
 
     <div class="footer">
@@ -102,7 +83,5 @@
       </p>
     </div>
   </div>
-  <!-- Tracking pixel for open tracking -->
-  <img src="<%= @tracking_pixel_url %>" width="1" height="1" alt="" style="display:none;">
 </body>
 </html>

@@ -37,10 +37,19 @@ Rails.application.routes.draw do
   # Tags
   resources :tags, only: [ :index, :create, :destroy ]
 
+  # Signup Forms
+  resources :signup_forms
+
   # Public routes (no authentication required)
   get "unsubscribe/:token", to: "unsubscribes#show", as: :unsubscribe
   post "unsubscribe/:token", to: "unsubscribes#create"
+  get "subscribe/:id", to: "public_signups#show", as: :public_signup
+  post "subscribe/:id", to: "public_signups#create"
   get "newsletters/:id/view/:token", to: "public_newsletters#show", as: :public_newsletter
+
+  # Email tracking (public, no auth)
+  get "t/o/:token", to: "tracking#open", as: :tracking_open
+  get "t/c/:token", to: "tracking#click", as: :tracking_click
 
   # Health check for load balancers and uptime monitors
   get "up" => "rails/health#show", as: :rails_health_check

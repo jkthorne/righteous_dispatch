@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= @signup_form.headline.presence || "Subscribe" %></title>
+  <%= csrf_meta_tags %>
+  <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+</head>
+<body class="bg-base-200 min-h-screen flex items-center justify-center p-4">
+  <div class="w-full max-w-md">
+    <div class="bg-base-100 border border-base-content/20 p-8">
+      <% if @signup_form.headline.present? %>
+        <h1 class="text-xl font-bold mb-2 text-center"><%= @signup_form.headline %></h1>
+      <% end %>
+
+      <% if @signup_form.description.present? %>
+        <p class="text-sm text-base-content/80 mb-6 text-center"><%= @signup_form.description %></p>
+      <% end %>
+
+      <% if flash[:notice] %>
+        <div class="bg-success/20 border border-success/30 p-4 mb-4 text-center">
+          <div class="text-sm text-success font-bold"><%= flash[:notice] %></div>
+        </div>
+      <% end %>
+
+      <% if flash[:alert] %>
+        <div class="bg-error/20 border border-error/30 p-4 mb-4 text-center">
+          <div class="text-sm text-error"><%= flash[:alert] %></div>
+        </div>
+      <% end %>
+
+      <%= form_with url: public_signup_path(@signup_form.public_id), method: :post, class: "space-y-4" do |f| %>
+        <div>
+          <label class="text-[10px] text-base-content/60 mb-1 block font-bold">EMAIL ADDRESS</label>
+          <%= email_field_tag :email, params[:email], required: true,
+              class: "w-full border border-base-content/20 bg-base-100 px-3 py-3 text-sm focus:border-primary focus:outline-none",
+              placeholder: "your@email.com" %>
+        </div>
+
+        <div>
+          <label class="text-[10px] text-base-content/60 mb-1 block font-bold">NAME (OPTIONAL)</label>
+          <%= text_field_tag :name, params[:name],
+              class: "w-full border border-base-content/20 bg-base-100 px-3 py-3 text-sm focus:border-primary focus:outline-none",
+              placeholder: "Your name" %>
+        </div>
+
+        <%= submit_tag @signup_form.button_text,
+            class: "w-full bg-primary text-primary-content hover:bg-primary/80 px-4 py-3 text-sm font-bold transition-colors cursor-pointer" %>
+      <% end %>
+    </div>
+
+    <div class="text-center mt-4 text-[10px] text-base-content/40">
+      Powered by RighteousDispatch
+    </div>
+  </div>
+</body>
+</html>

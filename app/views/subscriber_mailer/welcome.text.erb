@@ -1,0 +1,14 @@
+<%= @user.welcome_email_subject %>
+<%= "=" * @user.welcome_email_subject.length %>
+
+<% if @subscriber.name.present? %>
+Hi <%= @subscriber.name %>,
+
+<% end %>
+<%= @user.welcome_email_content %>
+
+— <%= @user.name %>
+
+---
+Sent via RighteousDispatch
+Unsubscribe: <%= @unsubscribe_url %>

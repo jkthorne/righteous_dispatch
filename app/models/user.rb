@@ -5,6 +5,7 @@ class User < ApplicationRecord
   has_many :newsletters, dependent: :destroy
   has_many :subscribers, dependent: :destroy
   has_many :tags, dependent: :destroy
+  has_many :signup_forms, dependent: :destroy
 
   before_create :set_confirmation_token
   before_create :set_remember_token

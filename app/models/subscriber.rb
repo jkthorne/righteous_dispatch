@@ -2,6 +2,7 @@ class Subscriber < ApplicationRecord
   belongs_to :user
   has_many :subscriber_tags, dependent: :destroy
   has_many :tags, through: :subscriber_tags
+  has_many :email_events, dependent: :destroy
 
   # Status enum
   enum :status, {

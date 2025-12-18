@@ -4,13 +4,16 @@
 
 puts "Seeding database..."
 
-# Create demo user
+# Create demo user with welcome email settings
 user = User.find_or_initialize_by(email: "demo@righteousdispatch.com")
 user.assign_attributes(
   name: "Demo User",
   password: "password123",
   password_confirmation: "password123",
-  confirmed_at: Time.current
+  confirmed_at: Time.current,
+  welcome_email_enabled: true,
+  welcome_email_subject: "Welcome to RighteousDispatch!",
+  welcome_email_content: "Thank you for subscribing to our newsletter!\n\nWe're excited to have you join our faith community. You'll receive regular updates including devotionals, community news, and prayer requests.\n\nMay God bless you abundantly!\n\n— The RighteousDispatch Team"
 )
 user.save!
 puts "Created user: #{user.email} (password: password123)"
@@ -231,6 +234,111 @@ newsletters_data.each do |data|
 end
 puts "Created #{newsletters_data.count} newsletters"
 
+# Create signup forms
+signup_forms_data = [
+  {
+    title: "Homepage Signup",
+    headline: "Stay Connected with Our Community",
+    description: "Get weekly devotionals, prayer updates, and community news delivered to your inbox.",
+    button_text: "SUBSCRIBE",
+    success_message: "Welcome to our community! Check your inbox for a welcome message.",
+    active: true,
+    tag_names: ["New Subscriber"]
+  },
+  {
+    title: "Blog Sidebar Form",
+    headline: "Subscribe to Our Newsletter",
+    description: "Never miss an update. Join thousands of believers.",
+    button_text: "JOIN NOW",
+    success_message: "Thanks for subscribing! You'll hear from us soon.",
+    active: true,
+    tag_names: []
+  },
+  {
+    title: "Prayer Warrior Signup",
+    headline: "Join Our Prayer Team",
+    description: "Receive weekly prayer requests and updates. Be part of our prayer warrior network.",
+    button_text: "JOIN PRAYER TEAM",
+    success_message: "Welcome to the prayer team! You'll receive prayer requests weekly.",
+    active: true,
+    tag_names: ["Prayer Warrior"]
+  },
+  {
+    title: "VIP List (Inactive)",
+    headline: "Join the VIP List",
+    description: "Exclusive content for our most engaged subscribers.",
+    button_text: "BECOME A VIP",
+    success_message: "Welcome to the VIP list!",
+    active: false,
+    tag_names: ["VIP"]
+  }
+]
+
+signup_forms = signup_forms_data.map do |data|
+  form = SignupForm.find_or_initialize_by(user: user, title: data[:title])
+  form.assign_attributes(
+    headline: data[:headline],
+    description: data[:description],
+    button_text: data[:button_text],
+    success_message: data[:success_message],
+    active: data[:active]
+  )
+  form.save!
+
+  # Assign tags
+  if data[:tag_names].present?
+    form_tags = tags.select { |t| data[:tag_names].include?(t.name) }
+    form.tags = form_tags
+  else
+    form.tags = []
+  end
+
+  form
+end
+puts "Created #{signup_forms.count} signup forms"
+
+# Create email events for sent newsletters (analytics demo data)
+sent_newsletters = Newsletter.where(user: user, status: :sent)
+confirmed_subscribers = Subscriber.where(user: user, status: :confirmed)
+
+sent_newsletters.each do |newsletter|
+  # Simulate opens for 60-80% of subscribers
+  open_rate = rand(60..80) / 100.0
+  openers = confirmed_subscribers.sample((confirmed_subscribers.count * open_rate).to_i)
+
+  openers.each do |subscriber|
+    EmailEvent.find_or_create_by(
+      newsletter: newsletter,
+      subscriber: subscriber,
+      event_type: EmailEvent::OPEN
+    ) do |event|
+      event.ip_address = "#{rand(1..255)}.#{rand(1..255)}.#{rand(1..255)}.#{rand(1..255)}"
+      event.user_agent = ["Mozilla/5.0 (iPhone)", "Mozilla/5.0 (Windows NT 10.0)", "Mozilla/5.0 (Macintosh)"].sample
+      event.created_at = newsletter.sent_at + rand(1..72).hours
+    end
+  end
+
+  # Simulate clicks for 20-40% of openers
+  click_rate = rand(20..40) / 100.0
+  clickers = openers.sample((openers.count * click_rate).to_i)
+
+  clickers.each do |subscriber|
+    # Each clicker clicks 1-3 links
+    rand(1..3).times do
+      EmailEvent.create!(
+        newsletter: newsletter,
+        subscriber: subscriber,
+        event_type: EmailEvent::CLICK,
+        metadata: { url: ["https://example.com/event", "https://example.com/donate", "https://example.com/learn-more"].sample },
+        ip_address: "#{rand(1..255)}.#{rand(1..255)}.#{rand(1..255)}.#{rand(1..255)}",
+        user_agent: ["Mozilla/5.0 (iPhone)", "Mozilla/5.0 (Windows NT 10.0)", "Mozilla/5.0 (Macintosh)"].sample,
+        created_at: newsletter.sent_at + rand(1..72).hours
+      )
+    end
+  end
+end
+puts "Created email tracking events for sent newsletters"
+
 # Summary
 puts ""
 puts "Seeding complete!"
@@ -245,4 +353,7 @@ puts "  - #{user.newsletters.scheduled.count} scheduled newsletters"
 puts "  - #{user.newsletters.drafts.count} draft newsletters"
 puts "  - #{user.subscribers.confirmed.count} confirmed subscribers"
 puts "  - #{user.tags.count} tags"
-puts "  - #{NewsletterTag.count} newsletter-tag assignments"
+puts "  - #{user.signup_forms.count} signup forms (#{user.signup_forms.active.count} active)"
+puts "  - #{EmailEvent.opens.count} email opens tracked"
+puts "  - #{EmailEvent.clicks.count} email clicks tracked"
+puts "  - Welcome email: #{user.welcome_email_enabled? ? 'enabled' : 'disabled'}"
