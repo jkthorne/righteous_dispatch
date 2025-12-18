@@ -1,24 +1,41 @@
-# README
+# Righteous Dispatch
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A self-hosted email newsletter platform built with Ruby on Rails.
 
-Things you may want to cover:
+## Features
 
-* Ruby version
+- **Newsletter Management** - Create, edit, schedule, and send newsletters with a rich text editor
+- **Subscriber Management** - Import and manage subscribers with tagging support
+- **Public Signup Forms** - Embeddable forms with customizable messages and automatic tag assignment
+- **Email Analytics** - Track opens and clicks with detailed statistics
+- **Tag-based Targeting** - Send newsletters to specific subscriber segments
+- **Dark Mode** - Full dark mode support throughout the interface
 
-* System dependencies
+## Requirements
 
-* Configuration
+- Ruby 3.4.7
+- PostgreSQL
+- Node.js (for asset compilation)
 
-* Database creation
+## Setup
 
-* Database initialization
+```bash
+# Install dependencies
+bundle install
 
-* How to run the test suite
+# Setup database
+bin/rails db:setup
 
-* Services (job queues, cache servers, search engines, etc.)
+# Start the server
+bin/dev
+```
 
-* Deployment instructions
+## Tech Stack
 
-* ...
+- Rails 8.1
+- PostgreSQL
+- Tailwind CSS + DaisyUI
+- Hotwire (Turbo + Stimulus)
+- Action Text (rich text editing)
+- Solid Queue (background jobs)
+- Kamal (deployment)
