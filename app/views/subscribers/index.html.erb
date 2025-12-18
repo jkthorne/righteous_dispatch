@@ -41,10 +41,10 @@
       <div class="bg-base-content/5 p-3 border-b border-base-content/20">
         <div class="grid grid-cols-12 gap-4 text-[10px] font-bold text-base-content/60">
           <div class="col-span-4">EMAIL</div>
-          <div class="col-span-3">NAME</div>
+          <div class="col-span-2">NAME</div>
           <div class="col-span-2">STATUS</div>
           <div class="col-span-2">SUBSCRIBED</div>
-          <div class="col-span-1">ACTIONS</div>
+          <div class="col-span-2">ACTIONS</div>
         </div>
       </div>
       <div class="divide-y divide-base-content/10">
@@ -56,7 +56,7 @@
                   <%= subscriber.email %>
                 <% end %>
               </div>
-              <div class="col-span-3 text-xs text-base-content/80">
+              <div class="col-span-2 text-xs text-base-content/80 truncate">
                 <%= subscriber.full_name != subscriber.email ? subscriber.full_name : "-" %>
               </div>
               <div class="col-span-2">
@@ -73,10 +73,13 @@
               <div class="col-span-2 text-[10px] text-base-content/60">
                 <%= subscriber.subscribed_at&.strftime("%b %d, %Y") || "-" %>
               </div>
-              <div class="col-span-1 flex items-center gap-2">
-                <%= button_to "X", subscriber_path(subscriber), method: :delete,
+              <div class="col-span-2 flex items-center gap-2">
+                <%= link_to "EDIT", edit_subscriber_path(subscriber),
+                    class: "text-[10px] text-primary hover:underline font-bold" %>
+                <%= button_to "DELETE", subscriber_path(subscriber), method: :delete,
+                    form: { class: "inline" },
                     data: { turbo_confirm: "Delete #{subscriber.email}?" },
-                    class: "text-[10px] text-error hover:underline font-bold" %>
+                    class: "text-[10px] text-error hover:underline font-bold cursor-pointer" %>
               </div>
             </div>
           </div>
