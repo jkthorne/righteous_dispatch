@@ -1,0 +1,16 @@
+<% flash.each do |type, message| %>
+  <%
+    color_class = case type.to_sym
+                  when :notice, :success then "bg-success/10 border-success/30 text-success"
+                  when :alert, :error then "bg-error/10 border-error/30 text-error"
+                  when :warning then "bg-warning/10 border-warning/30 text-warning"
+                  else "bg-info/10 border-info/30 text-info"
+                  end
+  %>
+  <div class="border p-3 <%= color_class %>" data-controller="flash" data-flash-target="message">
+    <div class="flex items-center justify-between gap-3">
+      <div class="text-[10px] sm:text-xs font-bold"><%= message %></div>
+      <button type="button" class="text-xs font-bold hover:opacity-70 cursor-pointer" data-action="flash#dismiss">X</button>
+    </div>
+  </div>
+<% end %>

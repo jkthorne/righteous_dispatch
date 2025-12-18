@@ -1,0 +1,29 @@
+<nav class="border-b border-base-content/20 bg-base-100">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="flex items-center justify-between h-12">
+      <!-- Logo/Brand -->
+      <div class="flex items-center gap-4">
+        <%= link_to root_path, class: "text-xs sm:text-sm font-bold hover:text-primary transition-colors" do %>
+          RIGHTEOUSDISPATCH
+        <% end %>
+        <span class="text-[9px] text-base-content/50 hidden sm:inline">SEND TRUTH BOLDLY</span>
+      </div>
+
+      <!-- Navigation Links -->
+      <div class="flex items-center gap-3">
+        <% if signed_in? %>
+          <%= link_to "DASHBOARD", dashboard_path,
+              class: "text-[10px] sm:text-xs font-bold text-primary hover:underline" %>
+          <span class="text-[10px] sm:text-xs text-base-content/60"><%= current_user.email %></span>
+          <%= button_to "SIGN OUT", session_path, method: :delete,
+              class: "bg-base-content/10 hover:bg-base-content/20 border border-base-content/20 px-3 py-1.5 text-[10px] font-bold transition-colors cursor-pointer" %>
+        <% else %>
+          <%= link_to "SIGN IN", new_session_path,
+              class: "text-[10px] sm:text-xs font-bold text-primary hover:underline" %>
+          <%= link_to "REGISTER", new_registration_path,
+              class: "bg-primary text-primary-content hover:bg-primary/80 px-3 py-1.5 text-[10px] font-bold transition-colors" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</nav>

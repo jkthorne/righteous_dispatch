@@ -1,0 +1,47 @@
+<% content_for :title, "Set New Password - RighteousDispatch" %>
+
+<div class="max-w-md mx-auto mt-8 sm:mt-16">
+  <div class="border border-base-content/20">
+    <div class="bg-base-content/5 p-3 border-b border-base-content/20">
+      <div class="text-[10px] sm:text-xs font-bold">SET NEW PASSWORD</div>
+    </div>
+
+    <div class="p-4 sm:p-6">
+      <p class="text-[10px] sm:text-xs text-base-content/60 mb-6">
+        Enter your new password below.
+      </p>
+
+      <%= form_with model: @user, url: password_path(token: params[:token]), method: :patch, class: "space-y-4" do |f| %>
+        <% if @user.errors.any? %>
+          <div class="bg-error/10 border border-error/30 p-3">
+            <div class="text-[10px] text-error font-bold mb-2">PLEASE FIX THE FOLLOWING ERRORS:</div>
+            <ul class="text-[10px] text-error space-y-1">
+              <% @user.errors.full_messages.each do |message| %>
+                <li>- <%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <div>
+          <label class="text-[10px] text-base-content/60 mb-1 block font-bold">NEW PASSWORD</label>
+          <%= f.password_field :password, required: true, autofocus: true,
+              class: "w-full border border-base-content/20 bg-base-100 px-3 py-2 text-xs focus:border-primary focus:outline-none",
+              placeholder: "Minimum 8 characters" %>
+        </div>
+
+        <div>
+          <label class="text-[10px] text-base-content/60 mb-1 block font-bold">CONFIRM NEW PASSWORD</label>
+          <%= f.password_field :password_confirmation, required: true,
+              class: "w-full border border-base-content/20 bg-base-100 px-3 py-2 text-xs focus:border-primary focus:outline-none",
+              placeholder: "Repeat password" %>
+        </div>
+
+        <div class="pt-2">
+          <%= f.submit "UPDATE PASSWORD",
+              class: "w-full bg-primary text-primary-content hover:bg-primary/80 px-4 py-2.5 text-[10px] sm:text-xs font-bold transition-colors cursor-pointer" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

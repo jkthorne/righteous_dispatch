@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html data-theme="righteousfellowship">
   <head>
-    <title><%= content_for(:title) || "Righteous Dispatch" %></title>
+    <title><%= content_for(:title) || "RighteousDispatch" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="Righteous Dispatch">
+    <meta name="application-name" content="RighteousDispatch">
     <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -23,8 +23,16 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <main class="container mx-auto mt-28 px-5 flex">
+  <body class="bg-base-100 text-base-content min-h-screen">
+    <%= render "shared/navigation" %>
+
+    <% if flash.any? %>
+      <div class="max-w-7xl mx-auto px-4 mt-4 space-y-2">
+        <%= render "shared/flash" %>
+      </div>
+    <% end %>
+
+    <main class="max-w-7xl mx-auto px-4 py-6">
       <%= yield %>
     </main>
   </body>

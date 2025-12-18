@@ -1,0 +1,41 @@
+<% content_for :title, "Dashboard - RighteousDispatch" %>
+
+<div class="max-w-4xl mx-auto">
+  <div class="border border-base-content/20 mb-6">
+    <div class="bg-base-content/5 p-3 border-b border-base-content/20">
+      <div class="text-[10px] sm:text-xs font-bold">DASHBOARD</div>
+    </div>
+    <div class="p-4 sm:p-6">
+      <h1 class="text-lg sm:text-xl font-bold mb-2">Welcome, <%= current_user.name %>!</h1>
+      <p class="text-[10px] sm:text-xs text-base-content/60">
+        You're signed in as <%= current_user.email %>
+      </p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div class="border border-base-content/20">
+      <div class="bg-base-content/5 p-3 border-b border-base-content/20">
+        <div class="text-[10px] sm:text-xs font-bold">NEWSLETTERS</div>
+      </div>
+      <div class="p-4">
+        <p class="text-[10px] sm:text-xs text-base-content/60 mb-4">
+          Create and send newsletters to your subscribers.
+        </p>
+        <span class="bg-warning/20 text-warning px-2 py-1 text-[10px] font-bold">COMING SOON</span>
+      </div>
+    </div>
+
+    <div class="border border-base-content/20">
+      <div class="bg-base-content/5 p-3 border-b border-base-content/20">
+        <div class="text-[10px] sm:text-xs font-bold">SUBSCRIBERS</div>
+      </div>
+      <div class="p-4">
+        <p class="text-[10px] sm:text-xs text-base-content/60 mb-4">
+          Manage your subscriber list and segments.
+        </p>
+        <span class="bg-warning/20 text-warning px-2 py-1 text-[10px] font-bold">COMING SOON</span>
+      </div>
+    </div>
+  </div>
+</div>
