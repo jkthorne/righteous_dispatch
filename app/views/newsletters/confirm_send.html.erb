@@ -1,0 +1,75 @@
+<% content_for :title, "Send: #{@newsletter.title} - RighteousDispatch" %>
+
+<div class="max-w-lg mx-auto">
+  <div class="mb-6">
+    <div class="text-[10px] text-base-content/60 mb-2">
+      <%= link_to "NEWSLETTERS", newsletters_path, class: "hover:underline" %> /
+      <%= link_to @newsletter.title.upcase, edit_newsletter_path(@newsletter), class: "hover:underline" %> /
+      SEND
+    </div>
+    <h1 class="text-lg sm:text-xl font-bold">CONFIRM SEND</h1>
+  </div>
+
+  <div class="border border-base-content/20 mb-4">
+    <div class="bg-base-content/5 p-3 border-b border-base-content/20">
+      <div class="text-[10px] sm:text-xs font-bold">NEWSLETTER DETAILS</div>
+    </div>
+    <div class="p-4 sm:p-6">
+      <div class="space-y-3">
+        <div>
+          <div class="text-[10px] text-base-content/60 mb-1">TITLE</div>
+          <div class="text-xs font-bold"><%= @newsletter.title %></div>
+        </div>
+        <div>
+          <div class="text-[10px] text-base-content/60 mb-1">SUBJECT LINE</div>
+          <div class="text-xs"><%= @newsletter.subject %></div>
+        </div>
+        <% if @newsletter.preview_text.present? %>
+          <div>
+            <div class="text-[10px] text-base-content/60 mb-1">PREVIEW TEXT</div>
+            <div class="text-xs text-base-content/60"><%= @newsletter.preview_text %></div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="border border-warning/30 bg-warning/10 p-4 mb-4">
+    <div class="flex items-start gap-3">
+      <div class="text-warning text-lg">!</div>
+      <div>
+        <div class="text-[10px] font-bold text-warning mb-1">CONFIRM SENDING</div>
+        <p class="text-[10px] text-base-content/80">
+          You are about to send this newsletter to <strong><%= @subscriber_count %></strong> confirmed subscriber<%= @subscriber_count == 1 ? "" : "s" %>.
+          This action cannot be undone.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-2 gap-px bg-base-content/10 border border-base-content/10 mb-6">
+    <div class="bg-base-100 p-4 text-center">
+      <div class="text-[10px] text-base-content/60 mb-1">RECIPIENTS</div>
+      <div class="text-2xl font-bold text-success tabular-nums"><%= @subscriber_count %></div>
+      <div class="text-[10px] text-base-content/50">confirmed subscribers</div>
+    </div>
+    <div class="bg-base-100 p-4 text-center">
+      <div class="text-[10px] text-base-content/60 mb-1">STATUS</div>
+      <div class="text-2xl font-bold"><%= @newsletter.status.upcase %></div>
+      <div class="text-[10px] text-base-content/50">current status</div>
+    </div>
+  </div>
+
+  <div class="flex items-center justify-between">
+    <%= link_to preview_newsletter_path(@newsletter), class: "text-[10px] text-base-content/60 hover:underline font-bold" do %>
+      <- BACK TO PREVIEW
+    <% end %>
+
+    <%= button_to send_newsletter_newsletter_path(@newsletter),
+        method: :post,
+        class: "bg-success text-success-content hover:bg-success/80 px-6 py-2.5 text-xs font-bold transition-colors cursor-pointer",
+        data: { turbo_confirm: "Are you sure you want to send this newsletter to #{@subscriber_count} subscribers? This cannot be undone." } do %>
+      SEND TO <%= @subscriber_count %> SUBSCRIBERS
+    <% end %>
+  </div>
+</div>

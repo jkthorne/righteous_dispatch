@@ -28,6 +28,7 @@ class Subscriber < ApplicationRecord
 
   # Callbacks
   before_create :set_confirmation_token
+  before_create :set_unsubscribe_token
   before_create :set_subscribed_at
 
   # Full name helper
@@ -66,6 +67,10 @@ class Subscriber < ApplicationRecord
 
   def set_confirmation_token
     self.confirmation_token = SecureRandom.urlsafe_base64(32)
+  end
+
+  def set_unsubscribe_token
+    self.unsubscribe_token = SecureRandom.urlsafe_base64(32)
   end
 
   def set_subscribed_at

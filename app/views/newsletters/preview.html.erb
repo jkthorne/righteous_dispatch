@@ -1,0 +1,68 @@
+<% content_for :title, "Preview: #{@newsletter.title} - RighteousDispatch" %>
+
+<div class="max-w-4xl mx-auto">
+  <div class="mb-6">
+    <div class="text-[10px] text-base-content/60 mb-2">
+      <%= link_to "NEWSLETTERS", newsletters_path, class: "hover:underline" %> /
+      <%= link_to @newsletter.title.upcase, edit_newsletter_path(@newsletter), class: "hover:underline" %> /
+      PREVIEW
+    </div>
+    <h1 class="text-lg sm:text-xl font-bold">EMAIL PREVIEW</h1>
+  </div>
+
+  <div class="border border-base-content/20 mb-4">
+    <div class="bg-base-content/5 p-3 border-b border-base-content/20 flex items-center justify-between">
+      <div class="text-[10px] sm:text-xs font-bold">EMAIL PREVIEW</div>
+      <div class="flex items-center gap-2">
+        <%= link_to edit_newsletter_path(@newsletter), class: "text-[10px] text-base-content/60 hover:underline font-bold" do %>
+          EDIT
+        <% end %>
+        <%= link_to confirm_send_newsletter_path(@newsletter), class: "bg-primary text-primary-content hover:bg-primary/80 px-3 py-1.5 text-[10px] font-bold transition-colors" do %>
+          SEND NEWSLETTER ->
+        <% end %>
+      </div>
+    </div>
+
+    <div class="p-4 bg-base-200">
+      <div class="bg-base-100 border border-base-content/10 shadow-sm">
+        <!-- Email Header -->
+        <div class="p-4 border-b border-base-content/10">
+          <div class="text-[10px] text-base-content/60 mb-1">TO:</div>
+          <div class="text-xs"><%= @subscriber.email %></div>
+          <div class="text-[10px] text-base-content/60 mb-1 mt-3">SUBJECT:</div>
+          <div class="text-xs font-bold"><%= @newsletter.subject %></div>
+          <% if @newsletter.preview_text.present? %>
+            <div class="text-[10px] text-base-content/60 mb-1 mt-3">PREVIEW TEXT:</div>
+            <div class="text-xs text-base-content/60"><%= @newsletter.preview_text %></div>
+          <% end %>
+        </div>
+
+        <!-- Email Content -->
+        <div class="p-6">
+          <div class="prose prose-sm max-w-none">
+            <%= @newsletter.content %>
+          </div>
+        </div>
+
+        <!-- Email Footer -->
+        <div class="p-4 bg-base-content/5 border-t border-base-content/10 text-center">
+          <p class="text-[10px] text-base-content/60">
+            Sent by <%= current_user.name %> via RighteousDispatch
+          </p>
+          <p class="text-[10px] text-base-content/40 mt-1">
+            <a href="#" class="hover:underline">Unsubscribe</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex items-center justify-between">
+    <%= link_to edit_newsletter_path(@newsletter), class: "text-[10px] text-base-content/60 hover:underline font-bold" do %>
+      <- BACK TO EDITOR
+    <% end %>
+    <%= link_to confirm_send_newsletter_path(@newsletter), class: "bg-primary text-primary-content hover:bg-primary/80 px-4 py-2 text-[10px] font-bold transition-colors" do %>
+      CONTINUE TO SEND ->
+    <% end %>
+  </div>
+</div>

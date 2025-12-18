@@ -1,0 +1,40 @@
+<% content_for :title, "Unsubscribe - RighteousDispatch" %>
+
+<div class="max-w-md mx-auto">
+  <div class="border border-base-content/20">
+    <div class="bg-base-content/5 p-3 border-b border-base-content/20">
+      <div class="text-[10px] sm:text-xs font-bold">UNSUBSCRIBE</div>
+    </div>
+    <div class="p-6 text-center">
+      <% if @subscriber.unsubscribed? %>
+        <div class="text-4xl mb-4">&#10003;</div>
+        <h1 class="text-lg font-bold mb-2">YOU'VE BEEN UNSUBSCRIBED</h1>
+        <p class="text-xs text-base-content/60 mb-4">
+          <strong><%= @subscriber.email %></strong> will no longer receive newsletters.
+        </p>
+        <p class="text-[10px] text-base-content/40">
+          We're sorry to see you go. If this was a mistake, please contact the newsletter sender.
+        </p>
+      <% else %>
+        <h1 class="text-lg font-bold mb-2">UNSUBSCRIBE FROM NEWSLETTER</h1>
+        <p class="text-xs text-base-content/60 mb-6">
+          Are you sure you want to unsubscribe <strong><%= @subscriber.email %></strong> from this newsletter?
+        </p>
+
+        <%= button_to "YES, UNSUBSCRIBE ME", unsubscribe_path(token: @subscriber.unsubscribe_token),
+            method: :post,
+            class: "bg-error/10 hover:bg-error/20 border border-error/30 text-error px-6 py-2.5 text-xs font-bold transition-colors cursor-pointer" %>
+
+        <p class="text-[10px] text-base-content/40 mt-4">
+          You can always resubscribe by contacting the newsletter sender.
+        </p>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="mt-6 text-center">
+    <div class="text-[10px] text-base-content/40">
+      Powered by <span class="font-bold">RIGHTEOUSDISPATCH</span>
+    </div>
+  </div>
+</div>

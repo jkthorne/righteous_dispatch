@@ -1,0 +1,16 @@
+RIGHTEOUSDISPATCH
+================================================================================
+
+<% if @newsletter.preview_text.present? -%>
+<%= @newsletter.preview_text %>
+
+<% end -%>
+<%= strip_tags(@newsletter.content.to_plain_text) %>
+
+--------------------------------------------------------------------------------
+
+Sent by <%= @user.name %> via RighteousDispatch
+
+To unsubscribe, visit: <%= @unsubscribe_url %>
+
+View in browser: <%= @view_in_browser_url %>

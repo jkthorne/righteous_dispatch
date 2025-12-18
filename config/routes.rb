@@ -10,7 +10,13 @@ Rails.application.routes.draw do
   get "dashboard", to: "dashboard#show", as: :dashboard
 
   # Newsletters
-  resources :newsletters
+  resources :newsletters do
+    member do
+      get :preview
+      get :confirm_send
+      post :send_newsletter
+    end
+  end
 
   # Subscribers
   resources :subscribers do
@@ -22,6 +28,11 @@ Rails.application.routes.draw do
 
   # Tags
   resources :tags, only: [ :index, :create, :destroy ]
+
+  # Public routes (no authentication required)
+  get "unsubscribe/:token", to: "unsubscribes#show", as: :unsubscribe
+  post "unsubscribe/:token", to: "unsubscribes#create"
+  get "newsletters/:id/view/:token", to: "public_newsletters#show", as: :public_newsletter
 
   # Health check for load balancers and uptime monitors
   get "up" => "rails/health#show", as: :rails_health_check

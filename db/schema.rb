@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_18_040337) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_18_041753) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -87,11 +87,13 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_18_040337) do
     t.string "last_name"
     t.string "status", default: "pending", null: false
     t.datetime "subscribed_at"
+    t.string "unsubscribe_token"
     t.datetime "unsubscribed_at"
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["confirmation_token"], name: "index_subscribers_on_confirmation_token", unique: true
     t.index ["status"], name: "index_subscribers_on_status"
+    t.index ["unsubscribe_token"], name: "index_subscribers_on_unsubscribe_token", unique: true
     t.index ["user_id", "email"], name: "index_subscribers_on_user_id_and_email", unique: true
     t.index ["user_id"], name: "index_subscribers_on_user_id"
   end

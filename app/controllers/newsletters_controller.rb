@@ -1,6 +1,6 @@
 class NewslettersController < ApplicationController
   before_action :require_authentication!
-  before_action :set_newsletter, only: [ :show, :edit, :update, :destroy ]
+  before_action :set_newsletter, only: [ :show, :edit, :update, :destroy, :preview, :confirm_send, :send_newsletter ]
 
   def index
     @newsletters = current_user.newsletters.recent
@@ -37,6 +37,46 @@ class NewslettersController < ApplicationController
   def destroy
     @newsletter.destroy
     redirect_to newsletters_path, notice: "Newsletter deleted successfully."
+  end
+
+  def preview
+    @subscriber = current_user.subscribers.confirmed.first || Subscriber.new(
+      email: current_user.email,
+      first_name: current_user.name.split.first,
+      last_name: current_user.name.split.last,
+      unsubscribe_token: "preview"
+    )
+  end
+
+  def confirm_send
+    @subscriber_count = current_user.subscribers.confirmed.count
+
+    unless @newsletter.ready_to_send?
+      redirect_to edit_newsletter_path(@newsletter), alert: "Newsletter is missing required fields (title, subject, or content)."
+      return
+    end
+
+    if @subscriber_count.zero?
+      redirect_to edit_newsletter_path(@newsletter), alert: "You have no confirmed subscribers to send to."
+      return
+    end
+  end
+
+  def send_newsletter
+    unless @newsletter.ready_to_send?
+      redirect_to edit_newsletter_path(@newsletter), alert: "Newsletter is missing required fields."
+      return
+    end
+
+    if @newsletter.sent?
+      redirect_to newsletters_path, alert: "This newsletter has already been sent."
+      return
+    end
+
+    @newsletter.update!(status: :sending)
+    SendNewsletterJob.perform_later(@newsletter.id)
+
+    redirect_to newsletters_path, notice: "Newsletter is being sent to #{current_user.subscribers.confirmed.count} subscribers."
   end
 
   private
