@@ -1,6 +1,11 @@
 class User < ApplicationRecord
   has_secure_password
 
+  # Associations
+  has_many :newsletters, dependent: :destroy
+  has_many :subscribers, dependent: :destroy
+  has_many :tags, dependent: :destroy
+
   before_create :set_confirmation_token
   before_create :set_remember_token
 

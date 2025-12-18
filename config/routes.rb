@@ -9,6 +9,20 @@ Rails.application.routes.draw do
   # Dashboard (authenticated users)
   get "dashboard", to: "dashboard#show", as: :dashboard
 
+  # Newsletters
+  resources :newsletters
+
+  # Subscribers
+  resources :subscribers do
+    collection do
+      get :import
+      post :process_import
+    end
+  end
+
+  # Tags
+  resources :tags, only: [ :index, :create, :destroy ]
+
   # Health check for load balancers and uptime monitors
   get "up" => "rails/health#show", as: :rails_health_check
 

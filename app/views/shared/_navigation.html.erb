@@ -10,11 +10,16 @@
       </div>
 
       <!-- Navigation Links -->
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-3 sm:gap-4">
         <% if signed_in? %>
           <%= link_to "DASHBOARD", dashboard_path,
-              class: "text-[10px] sm:text-xs font-bold text-primary hover:underline" %>
-          <span class="text-[10px] sm:text-xs text-base-content/60"><%= current_user.email %></span>
+              class: "text-[10px] sm:text-xs font-bold #{request.path == dashboard_path ? 'text-primary' : 'text-base-content/60 hover:text-primary'}" %>
+          <%= link_to "NEWSLETTERS", newsletters_path,
+              class: "text-[10px] sm:text-xs font-bold #{request.path.start_with?('/newsletters') ? 'text-primary' : 'text-base-content/60 hover:text-primary'}" %>
+          <%= link_to "SUBSCRIBERS", subscribers_path,
+              class: "text-[10px] sm:text-xs font-bold #{request.path.start_with?('/subscribers') ? 'text-primary' : 'text-base-content/60 hover:text-primary'}" %>
+          <span class="text-[10px] sm:text-xs text-base-content/40 hidden sm:inline">|</span>
+          <span class="text-[10px] sm:text-xs text-base-content/60 hidden sm:inline"><%= current_user.email %></span>
           <%= button_to "SIGN OUT", session_path, method: :delete,
               class: "bg-base-content/10 hover:bg-base-content/20 border border-base-content/20 px-3 py-1.5 text-[10px] font-bold transition-colors cursor-pointer" %>
         <% else %>

@@ -13,28 +13,81 @@
     </div>
   </div>
 
+  <!-- Quick Stats -->
+  <div class="grid grid-cols-2 sm:grid-cols-4 gap-px bg-base-content/10 border border-base-content/10 mb-6">
+    <div class="bg-base-100 p-4 border-l-2 border-primary">
+      <div class="text-[10px] text-base-content/60 mb-1">NEWSLETTERS</div>
+      <div class="text-xl sm:text-2xl font-bold tabular-nums"><%= current_user.newsletters.count %></div>
+      <div class="text-[10px] text-base-content/50"><%= current_user.newsletters.drafts.count %> drafts</div>
+    </div>
+    <div class="bg-base-100 p-4 border-l-2 border-success">
+      <div class="text-[10px] text-base-content/60 mb-1">SUBSCRIBERS</div>
+      <div class="text-xl sm:text-2xl font-bold text-success tabular-nums"><%= current_user.subscribers.count %></div>
+      <div class="text-[10px] text-base-content/50"><%= current_user.subscribers.confirmed.count %> confirmed</div>
+    </div>
+    <div class="bg-base-100 p-4 border-l-2 border-warning">
+      <div class="text-[10px] text-base-content/60 mb-1">SENT</div>
+      <div class="text-xl sm:text-2xl font-bold tabular-nums"><%= current_user.newsletters.sent.count %></div>
+      <div class="text-[10px] text-base-content/50">newsletters</div>
+    </div>
+    <div class="bg-base-100 p-4 border-l-2 border-info">
+      <div class="text-[10px] text-base-content/60 mb-1">TAGS</div>
+      <div class="text-xl sm:text-2xl font-bold tabular-nums"><%= current_user.tags.count %></div>
+      <div class="text-[10px] text-base-content/50">segments</div>
+    </div>
+  </div>
+
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
     <div class="border border-base-content/20">
-      <div class="bg-base-content/5 p-3 border-b border-base-content/20">
+      <div class="bg-base-content/5 p-3 border-b border-base-content/20 flex items-center justify-between">
         <div class="text-[10px] sm:text-xs font-bold">NEWSLETTERS</div>
+        <%= link_to "VIEW ALL ->", newsletters_path, class: "text-[10px] text-primary hover:underline font-bold" %>
       </div>
       <div class="p-4">
-        <p class="text-[10px] sm:text-xs text-base-content/60 mb-4">
-          Create and send newsletters to your subscribers.
-        </p>
-        <span class="bg-warning/20 text-warning px-2 py-1 text-[10px] font-bold">COMING SOON</span>
+        <% if current_user.newsletters.any? %>
+          <div class="space-y-2">
+            <% current_user.newsletters.recent.limit(3).each do |newsletter| %>
+              <div class="flex items-center justify-between">
+                <%= link_to newsletter.title, edit_newsletter_path(newsletter), class: "text-xs hover:text-primary truncate" %>
+                <span class="text-[10px] text-base-content/60"><%= newsletter.status.upcase %></span>
+              </div>
+            <% end %>
+          </div>
+        <% else %>
+          <p class="text-[10px] text-base-content/60 mb-3">No newsletters yet.</p>
+        <% end %>
+        <%= link_to new_newsletter_path, class: "inline-block mt-3 bg-primary text-primary-content hover:bg-primary/80 px-3 py-1.5 text-[10px] font-bold transition-colors" do %>
+          + NEW NEWSLETTER
+        <% end %>
       </div>
     </div>
 
     <div class="border border-base-content/20">
-      <div class="bg-base-content/5 p-3 border-b border-base-content/20">
+      <div class="bg-base-content/5 p-3 border-b border-base-content/20 flex items-center justify-between">
         <div class="text-[10px] sm:text-xs font-bold">SUBSCRIBERS</div>
+        <%= link_to "VIEW ALL ->", subscribers_path, class: "text-[10px] text-primary hover:underline font-bold" %>
       </div>
       <div class="p-4">
-        <p class="text-[10px] sm:text-xs text-base-content/60 mb-4">
-          Manage your subscriber list and segments.
-        </p>
-        <span class="bg-warning/20 text-warning px-2 py-1 text-[10px] font-bold">COMING SOON</span>
+        <% if current_user.subscribers.any? %>
+          <div class="space-y-2">
+            <% current_user.subscribers.recent.limit(3).each do |subscriber| %>
+              <div class="flex items-center justify-between">
+                <span class="text-xs truncate"><%= subscriber.email %></span>
+                <span class="text-[10px] text-base-content/60"><%= subscriber.status.upcase %></span>
+              </div>
+            <% end %>
+          </div>
+        <% else %>
+          <p class="text-[10px] text-base-content/60 mb-3">No subscribers yet.</p>
+        <% end %>
+        <div class="mt-3 flex items-center gap-2">
+          <%= link_to new_subscriber_path, class: "bg-primary text-primary-content hover:bg-primary/80 px-3 py-1.5 text-[10px] font-bold transition-colors" do %>
+            + ADD
+          <% end %>
+          <%= link_to import_subscribers_path, class: "bg-base-content/10 hover:bg-base-content/20 border border-base-content/20 px-3 py-1.5 text-[10px] font-bold transition-colors" do %>
+            IMPORT
+          <% end %>
+        </div>
       </div>
     </div>
   </div>

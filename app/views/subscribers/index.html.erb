@@ -1,0 +1,105 @@
+<% content_for :title, "Subscribers - RighteousDispatch" %>
+
+<div class="max-w-4xl mx-auto">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h1 class="text-lg sm:text-xl font-bold">SUBSCRIBERS</h1>
+      <p class="text-[10px] sm:text-xs text-base-content/60 mt-1">
+        <%= current_user.subscribers.count %> total subscribers
+        <% if current_user.subscribers.confirmed.count > 0 %>
+          (<%= current_user.subscribers.confirmed.count %> confirmed)
+        <% end %>
+      </p>
+    </div>
+    <div class="flex items-center gap-2">
+      <%= link_to import_subscribers_path, class: "bg-base-content/10 hover:bg-base-content/20 border border-base-content/20 px-3 py-2 text-[10px] font-bold transition-colors" do %>
+        IMPORT CSV
+      <% end %>
+      <%= link_to new_subscriber_path, class: "bg-primary text-primary-content hover:bg-primary/80 px-3 py-2 text-[10px] font-bold transition-colors" do %>
+        + ADD SUBSCRIBER
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="border border-base-content/20 mb-4">
+    <div class="p-3 flex items-center gap-3 flex-wrap">
+      <span class="text-[10px] font-bold text-base-content/60">FILTER:</span>
+      <%= link_to "ALL", subscribers_path,
+          class: "text-[10px] font-bold #{params[:status].blank? ? 'text-primary' : 'text-base-content/60 hover:text-primary'}" %>
+      <%= link_to "CONFIRMED", subscribers_path(status: "confirmed"),
+          class: "text-[10px] font-bold #{params[:status] == 'confirmed' ? 'text-primary' : 'text-base-content/60 hover:text-primary'}" %>
+      <%= link_to "PENDING", subscribers_path(status: "pending"),
+          class: "text-[10px] font-bold #{params[:status] == 'pending' ? 'text-primary' : 'text-base-content/60 hover:text-primary'}" %>
+      <%= link_to "UNSUBSCRIBED", subscribers_path(status: "unsubscribed"),
+          class: "text-[10px] font-bold #{params[:status] == 'unsubscribed' ? 'text-primary' : 'text-base-content/60 hover:text-primary'}" %>
+    </div>
+  </div>
+
+  <% if @subscribers.any? %>
+    <div class="border border-base-content/20">
+      <div class="bg-base-content/5 p-3 border-b border-base-content/20">
+        <div class="grid grid-cols-12 gap-4 text-[10px] font-bold text-base-content/60">
+          <div class="col-span-4">EMAIL</div>
+          <div class="col-span-3">NAME</div>
+          <div class="col-span-2">STATUS</div>
+          <div class="col-span-2">SUBSCRIBED</div>
+          <div class="col-span-1">ACTIONS</div>
+        </div>
+      </div>
+      <div class="divide-y divide-base-content/10">
+        <% @subscribers.each do |subscriber| %>
+          <div class="p-3 hover:bg-base-200 transition-colors">
+            <div class="grid grid-cols-12 gap-4 items-center">
+              <div class="col-span-4">
+                <%= link_to edit_subscriber_path(subscriber), class: "text-xs hover:text-primary" do %>
+                  <%= subscriber.email %>
+                <% end %>
+              </div>
+              <div class="col-span-3 text-xs text-base-content/80">
+                <%= subscriber.full_name != subscriber.email ? subscriber.full_name : "-" %>
+              </div>
+              <div class="col-span-2">
+                <%
+                  status_class = case subscriber.status
+                                 when "pending" then "bg-warning/20 text-warning"
+                                 when "confirmed" then "bg-success/20 text-success"
+                                 when "unsubscribed" then "bg-base-content/20 text-base-content/60"
+                                 when "bounced" then "bg-error/20 text-error"
+                                 end
+                %>
+                <span class="<%= status_class %> px-2 py-1 text-[10px] font-bold"><%= subscriber.status.upcase %></span>
+              </div>
+              <div class="col-span-2 text-[10px] text-base-content/60">
+                <%= subscriber.subscribed_at&.strftime("%b %d, %Y") || "-" %>
+              </div>
+              <div class="col-span-1 flex items-center gap-2">
+                <%= button_to "X", subscriber_path(subscriber), method: :delete,
+                    data: { turbo_confirm: "Delete #{subscriber.email}?" },
+                    class: "text-[10px] text-error hover:underline font-bold" %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% else %>
+    <div class="border border-base-content/20 p-8 text-center">
+      <div class="text-base-content/40 mb-4">
+        <svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+        </svg>
+      </div>
+      <div class="text-sm font-bold mb-2">NO SUBSCRIBERS YET</div>
+      <p class="text-[10px] text-base-content/60 mb-4">Add your first subscriber or import from a CSV file.</p>
+      <div class="flex items-center justify-center gap-3">
+        <%= link_to import_subscribers_path, class: "bg-base-content/10 hover:bg-base-content/20 border border-base-content/20 px-4 py-2 text-[10px] font-bold transition-colors" do %>
+          IMPORT CSV
+        <% end %>
+        <%= link_to new_subscriber_path, class: "bg-primary text-primary-content hover:bg-primary/80 px-4 py-2 text-[10px] font-bold transition-colors" do %>
+          ADD SUBSCRIBER
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
