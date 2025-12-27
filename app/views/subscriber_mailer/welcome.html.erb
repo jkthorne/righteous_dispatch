@@ -63,8 +63,8 @@
     <div class="content">
       <h2><%= @user.welcome_email_subject %></h2>
 
-      <% if @subscriber.name.present? %>
-        <p>Hi <%= @subscriber.name %>,</p>
+      <% if @subscriber.first_name.present? %>
+        <p>Hi <%= @subscriber.first_name %>,</p>
       <% end %>
 
       <p><%= simple_format(@user.welcome_email_content) %></p>

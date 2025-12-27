@@ -1,11 +1,13 @@
 class User < ApplicationRecord
-  has_secure_password
+  has_secure_password reset_token: false
 
-  # Associations
+  # Associations - order matters for dependent: :destroy
+  # signup_forms and newsletters have join tables referencing tags
+  # so they must be destroyed before tags
+  has_many :signup_forms, dependent: :destroy
   has_many :newsletters, dependent: :destroy
   has_many :subscribers, dependent: :destroy
   has_many :tags, dependent: :destroy
-  has_many :signup_forms, dependent: :destroy
 
   before_create :set_confirmation_token
   before_create :set_remember_token

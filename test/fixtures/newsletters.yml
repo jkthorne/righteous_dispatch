@@ -1,0 +1,52 @@
+# Newsletters fixture
+
+draft_newsletter:
+  user: alice
+  title: "My Draft Newsletter"
+  subject: "Check out this draft"
+  preview_text: "Preview text here"
+  status: draft
+  scheduled_at: ~
+  sent_at: ~
+
+scheduled_newsletter:
+  user: alice
+  title: "Scheduled Newsletter"
+  subject: "Coming Soon"
+  preview_text: "Coming to your inbox"
+  status: scheduled
+  scheduled_at: <%= 1.day.from_now %>
+  sent_at: ~
+
+sent_newsletter:
+  user: alice
+  title: "Already Sent Newsletter"
+  subject: "This was sent"
+  preview_text: "You already received this"
+  status: sent
+  scheduled_at: ~
+  sent_at: <%= 1.day.ago %>
+
+ready_to_send_newsletter:
+  user: alice
+  title: "Ready Newsletter"
+  subject: "Ready to go"
+  preview_text: "Ready preview"
+  status: scheduled
+  scheduled_at: <%= 1.hour.ago %>
+  sent_at: ~
+
+sending_newsletter:
+  user: alice
+  title: "Currently Sending"
+  subject: "In Progress"
+  preview_text: "Being sent"
+  status: sending
+  sent_at: ~
+
+bob_newsletter:
+  user: bob
+  title: "Bob's Newsletter"
+  subject: "Bob says hi"
+  preview_text: "From Bob"
+  status: draft

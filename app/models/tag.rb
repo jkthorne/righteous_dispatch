@@ -4,6 +4,8 @@ class Tag < ApplicationRecord
   has_many :subscribers, through: :subscriber_tags
   has_many :newsletter_tags, dependent: :destroy
   has_many :newsletters, through: :newsletter_tags
+  has_many :signup_form_tags, dependent: :destroy
+  has_many :signup_forms, through: :signup_form_tags
 
   # Scopes
   scope :for_user, ->(user) { where(user: user) }

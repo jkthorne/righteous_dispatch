@@ -1,0 +1,26 @@
+# Email events fixture
+
+sent_open:
+  newsletter: sent_newsletter
+  subscriber: confirmed_subscriber
+  event_type: open
+  ip_address: "192.168.1.1"
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+  metadata: {}
+
+sent_click:
+  newsletter: sent_newsletter
+  subscriber: confirmed_subscriber
+  event_type: click
+  ip_address: "192.168.1.1"
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+  metadata:
+    url: "https://example.com/link"
+
+tagged_open:
+  newsletter: sent_newsletter
+  subscriber: tagged_subscriber
+  event_type: open
+  ip_address: "10.0.0.1"
+  user_agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)"
+  metadata: {}

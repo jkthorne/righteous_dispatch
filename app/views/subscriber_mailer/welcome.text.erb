@@ -1,8 +1,8 @@
 <%= @user.welcome_email_subject %>
 <%= "=" * @user.welcome_email_subject.length %>
 
-<% if @subscriber.name.present? %>
-Hi <%= @subscriber.name %>,
+<% if @subscriber.first_name.present? %>
+Hi <%= @subscriber.first_name %>,
 
 <% end %>
 <%= @user.welcome_email_content %>

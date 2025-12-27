@@ -1,0 +1,21 @@
+# Tags fixture
+
+tech:
+  user: alice
+  name: Technology
+  color: "#3b82f6"
+
+sports:
+  user: alice
+  name: Sports
+  color: "#10b981"
+
+news:
+  user: alice
+  name: News
+  color: "#ef4444"
+
+bob_general:
+  user: bob
+  name: General
+  color: "#8b5cf6"

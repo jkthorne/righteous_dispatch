@@ -47,8 +47,8 @@ class TrackingController < ApplicationController
     data = Rails.application.message_verifier(:tracking).verified(token)
     return [nil, nil] unless data
 
-    newsletter = Newsletter.find_by(id: data[:newsletter_id])
-    subscriber = Subscriber.find_by(id: data[:subscriber_id])
+    newsletter = Newsletter.find_by(id: data["newsletter_id"])
+    subscriber = Subscriber.find_by(id: data["subscriber_id"])
 
     [newsletter, subscriber]
   rescue ActiveSupport::MessageVerifier::InvalidSignature

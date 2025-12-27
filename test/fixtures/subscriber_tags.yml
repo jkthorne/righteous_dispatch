@@ -1,0 +1,9 @@
+# Subscriber tags fixture (join table)
+
+tagged_tech:
+  subscriber: tagged_subscriber
+  tag: tech
+
+tagged_sports:
+  subscriber: tagged_subscriber
+  tag: sports

@@ -10,6 +10,31 @@ module ActiveSupport
     # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
     fixtures :all
 
-    # Add more helper methods to be used by all tests here...
+    # Sign in helper for integration tests (posts to session path)
+    def sign_in(user, password: "password123")
+      post session_path, params: { email: user.email, password: password }
+    end
+
+    # Sign out helper for integration tests
+    def sign_out
+      delete session_path
+    end
+
+    # Generate tracking token for tests
+    def generate_tracking_token(newsletter:, subscriber:)
+      Rails.application.message_verifier(:tracking).generate(
+        { newsletter_id: newsletter.id, subscriber_id: subscriber.id },
+        expires_in: 1.year
+      )
+    end
+  end
+end
+
+# Controller test helper for setting session directly
+module ActionDispatch
+  class IntegrationTest
+    def sign_in_as(user, password: "password123")
+      post session_path, params: { email: user.email, password: password }
+    end
   end
 end

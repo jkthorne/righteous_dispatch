@@ -1,0 +1,9 @@
+# Signup form tags fixture (join table)
+
+active_form_tech:
+  signup_form: active_form
+  tag: tech
+
+active_form_sports:
+  signup_form: active_form
+  tag: sports

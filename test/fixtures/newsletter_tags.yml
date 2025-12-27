@@ -1,0 +1,5 @@
+# Newsletter tags fixture (join table)
+
+scheduled_tech:
+  newsletter: scheduled_newsletter
+  tag: tech

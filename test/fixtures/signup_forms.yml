@@ -1,0 +1,31 @@
+# Signup forms fixture
+
+active_form:
+  user: alice
+  title: "Main Signup Form"
+  public_id: <%= SecureRandom.alphanumeric(10).downcase %>
+  headline: "Join Our Newsletter"
+  description: "Get weekly updates"
+  button_text: "Subscribe Now"
+  success_message: "Welcome aboard!"
+  active: true
+
+inactive_form:
+  user: alice
+  title: "Inactive Form"
+  public_id: <%= SecureRandom.alphanumeric(10).downcase %>
+  headline: "Old Form"
+  description: "Not in use"
+  button_text: "Subscribe"
+  success_message: "Thanks!"
+  active: false
+
+bob_form:
+  user: bob
+  title: "Bob's Form"
+  public_id: <%= SecureRandom.alphanumeric(10).downcase %>
+  headline: "Bob's Newsletter"
+  description: "Subscribe to Bob"
+  button_text: "Join"
+  success_message: "Thanks for joining!"
+  active: true

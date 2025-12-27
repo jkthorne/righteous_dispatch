@@ -1,0 +1,38 @@
+# Users fixture
+# All users have password: 'password123'
+
+alice:
+  name: Alice Johnson
+  email: alice@example.com
+  password_digest: <%= BCrypt::Password.create('password123') %>
+  confirmation_token: <%= SecureRandom.urlsafe_base64(32) %>
+  confirmation_sent_at: <%= 1.day.ago %>
+  confirmed_at: <%= 1.hour.ago %>
+  remember_token: <%= SecureRandom.urlsafe_base64(32) %>
+  remember_created_at: <%= Time.current %>
+  welcome_email_enabled: true
+  welcome_email_subject: "Welcome to Alice's Newsletter!"
+  welcome_email_content: "Thanks for joining our community!"
+
+bob:
+  name: Bob Smith
+  email: bob@example.com
+  password_digest: <%= BCrypt::Password.create('password123') %>
+  confirmation_token: <%= SecureRandom.urlsafe_base64(32) %>
+  confirmation_sent_at: <%= 1.day.ago %>
+  confirmed_at: ~
+  remember_token: <%= SecureRandom.urlsafe_base64(32) %>
+  remember_created_at: <%= Time.current %>
+  welcome_email_enabled: false
+
+charlie:
+  name: Charlie Brown
+  email: charlie@example.com
+  password_digest: <%= BCrypt::Password.create('password123') %>
+  confirmation_token: ~
+  confirmation_sent_at: ~
+  confirmed_at: <%= 1.week.ago %>
+  password_reset_token: <%= SecureRandom.urlsafe_base64(32) %>
+  password_reset_sent_at: <%= 1.hour.ago %>
+  remember_token: <%= SecureRandom.urlsafe_base64(32) %>
+  remember_created_at: <%= Time.current %>

@@ -1,4 +1,31 @@
-# one:
-#   record: name_of_fixture (ClassOfFixture)
-#   name: content
-#   body: <p>In a <i>million</i> stars!</p>
+# Action Text rich texts fixture for newsletter content
+
+draft_newsletter_content:
+  record: draft_newsletter (Newsletter)
+  name: content
+  body: <div class="trix-content"><p>This is the <strong>draft</strong> content of the newsletter.</p></div>
+
+scheduled_newsletter_content:
+  record: scheduled_newsletter (Newsletter)
+  name: content
+  body: <div class="trix-content"><p>Scheduled content with a <a href="https://example.com">link</a> to click.</p></div>
+
+sent_newsletter_content:
+  record: sent_newsletter (Newsletter)
+  name: content
+  body: <div class="trix-content"><p>This newsletter has been <em>sent</em> to all subscribers.</p></div>
+
+ready_to_send_newsletter_content:
+  record: ready_to_send_newsletter (Newsletter)
+  name: content
+  body: <div class="trix-content"><p>Ready to send content with important information.</p></div>
+
+sending_newsletter_content:
+  record: sending_newsletter (Newsletter)
+  name: content
+  body: <div class="trix-content"><p>Currently being sent to subscribers.</p></div>
+
+bob_newsletter_content:
+  record: bob_newsletter (Newsletter)
+  name: content
+  body: <div class="trix-content"><p>Bob's newsletter content here.</p></div>
